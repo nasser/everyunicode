@@ -13,7 +13,9 @@ File.open('everyunicode.txt', 'r+:UTF-8') do |file|
   every = file.read.split("\t")
 
   # tweet next character and remove it from array
-  Twitter.update(every.shift)
+  char = every.shift
+  # add zero width space character to characters that twitter will silently ignore
+  Twitter.update(char + ( char =~ /(S|D|F|M|W)/ ? "\u200b" : "") )
 
   # erase file
   file.seek 0, IO::SEEK_SET 
